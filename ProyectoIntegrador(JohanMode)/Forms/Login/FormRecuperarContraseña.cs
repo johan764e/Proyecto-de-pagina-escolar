@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+
+namespace ProyectoIntegrador_JohanMode_.Forms.Login
+{
+    public partial class FormRecuperarContraseña : Form
+    {
+        public FormRecuperarContraseña()
+        {
+            InitializeComponent();
+        }
+
+        private void FormRecuperarContraseña_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
