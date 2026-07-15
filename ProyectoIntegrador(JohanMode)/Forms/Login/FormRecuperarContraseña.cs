@@ -19,5 +19,10 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
         {
 
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

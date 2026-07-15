@@ -8,9 +8,7 @@ namespace ProyectoIntegrador_JohanMode_.Datos
 
     public class UsuarioDAO
     {
-
-
-        // Reemplaza esto con tu cadena de conexión real a tu servidor de SQL Server
+        // Reemplaza esto con tu cadena de conexión real a tu servidor2 de SQL Server
         private string conexionString = @"Server=localhost;Database=ProyectoIntegradorV1;Trusted_Connection=True;TrustServerCertificate=True;";  
 
         // === MÉTODO 1: REGISTRAR UN USUARIO NUEVO ===
