@@ -46,8 +46,10 @@ namespace ProyectoIntegrador_JohanMode_
         {
             FormRegistro registro = new FormRegistro();
 
-            registro.Show();
+            // Le pasamos este login como su "propietario" o "dueño"
+            registro.Owner = this;
 
+            registro.Show();
             this.Hide();
         }
 
