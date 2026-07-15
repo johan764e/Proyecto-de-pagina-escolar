@@ -70,7 +70,7 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
 
         private void BtnRegistrar2_Click(object sender, EventArgs e)
         {
-            // 1. Validamos todos tus campos usando tus variables reales
+            // 1. Validamos que el usuario no deje campos vacíos usando tus nombres de TextBox reales
             if (string.IsNullOrWhiteSpace(textNMCM.Text) ||
                 string.IsNullOrWhiteSpace(txtCorreo2.Text) ||
                 string.IsNullOrWhiteSpace(txtContraceña.Text) ||
@@ -81,17 +81,17 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
                 return;
             }
 
-            // 2. Validamos que ambas contraseñas coincidan antes de mandar a la BD
+            // 2. Validamos que la contraseña y la confirmación coincidan
             if (txtContraceña.Text != txtConfContra.Text)
             {
-                MessageBox.Show("Las contraseñas no coinciden. Verifícalas.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Las contraseñas no coinciden. Por favor, verifícalas.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 3. Instanciamos nuestra clase de datos
+            // 3. Instanciamos la clase de base de datos
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-            // 4. Enviamos los datos a la base de datos (incluyendo el grupo)
+            // 4. Enviamos la información a registrar (pasando el grupo)
             bool registroExitoso = usuarioDAO.RegistrarUsuario(
                 textNMCM.Text.Trim(),
                 txtCorreo2.Text.Trim(),
@@ -99,17 +99,17 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
                 txtGrup.Text.Trim()
             );
 
-            // 5. Evaluamos la respuesta
+            // 5. Evaluamos la respuesta de la base de datos
             if (registroExitoso)
             {
                 MessageBox.Show("¡Usuario registrado con éxito!", "¡Listo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // 6. Buscamos el formulario de Login de forma genérica en la memoria
+                // 6. Redireccionamos limpiamente de vuelta al login usando la memoria de la aplicación
+                // Esto evita errores de compilación por namespaces incorrectos
                 bool loginAbierto = false;
 
                 foreach (Form frm in Application.OpenForms)
                 {
-                    // Buscamos cualquier formulario que se llame FormLogin
                     if (frm.Name == "FormLogin")
                     {
                         frm.Show();
@@ -118,13 +118,13 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
                     }
                 }
 
-                // Si por alguna razón el Login no estaba abierto en segundo plano
+                // En caso extremo de que el Login no estuviera cargado en memoria, lo iniciamos de forma segura
                 if (!loginAbierto)
                 {
-                    MessageBox.Show("El registro fue exitoso. Por favor, reinicia la aplicación para iniciar sesión.", "Registro completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Por favor, reinicie la aplicación para iniciar sesión.", "Registro completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                // Destruimos la pantalla de registro para no acumular ventanas abiertas
+                // Destruimos la pantalla de registro de la memoria RAM para evitar que el programa se ponga lento
                 this.Dispose();
             }
             else

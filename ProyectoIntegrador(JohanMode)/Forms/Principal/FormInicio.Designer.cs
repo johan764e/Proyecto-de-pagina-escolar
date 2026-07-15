@@ -1,6 +1,6 @@
-﻿namespace ProyectoIntegrador_JohanMode_.Forms.Login
+﻿namespace ProyectoIntegrador_JohanMode_.Forms.Principal
 {
-    partial class FormRecuperarContraseña
+    partial class FormInicio
     {
         /// <summary>
         /// Required designer variable.
@@ -28,17 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            SuspendLayout();
-            // 
-            // FormRecuperarContraseña
-            // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Name = "FormRecuperarContraseña";
-            Text = "Form1";
-            Load += FormRecuperarContraseña_Load;
-            ResumeLayout(false);
+            this.components = new System.ComponentModel.Container();
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Text = "Form1";
         }
 
         #endregion

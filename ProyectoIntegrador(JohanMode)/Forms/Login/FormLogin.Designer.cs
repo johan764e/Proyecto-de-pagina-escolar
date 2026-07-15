@@ -42,29 +42,26 @@
             // 
             // pictureBox1
             // 
-            pictureBox1.Location = new Point(257, 53);
-            pictureBox1.Margin = new Padding(3, 4, 3, 4);
+            pictureBox1.Location = new Point(225, 40);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(357, 75);
+            pictureBox1.Size = new Size(312, 56);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // TextCorreoElectronico
             // 
-            TextCorreoElectronico.Location = new Point(257, 247);
-            TextCorreoElectronico.Margin = new Padding(3, 4, 3, 4);
+            TextCorreoElectronico.Location = new Point(225, 185);
             TextCorreoElectronico.Name = "TextCorreoElectronico";
-            TextCorreoElectronico.Size = new Size(356, 27);
+            TextCorreoElectronico.Size = new Size(312, 23);
             TextCorreoElectronico.TabIndex = 1;
-            TextCorreoElectronico.UseSystemPasswordChar = true;
             TextCorreoElectronico.TextChanged += TextCorreoElectronico_TextChanged;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(257, 211);
+            label1.Location = new Point(225, 158);
             label1.Name = "label1";
-            label1.Size = new Size(127, 20);
+            label1.Size = new Size(102, 15);
             label1.TabIndex = 3;
             label1.Text = "Ingresé su Correo:";
             label1.Click += label1_Click;
@@ -72,18 +69,17 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(257, 309);
+            label2.Location = new Point(225, 232);
             label2.Name = "label2";
-            label2.Size = new Size(143, 20);
+            label2.Size = new Size(115, 15);
             label2.TabIndex = 4;
             label2.Text = "Ingresar Contraseña:";
             // 
             // textContraceña
             // 
-            textContraceña.Location = new Point(257, 345);
-            textContraceña.Margin = new Padding(3, 4, 3, 4);
+            textContraceña.Location = new Point(225, 259);
             textContraceña.Name = "textContraceña";
-            textContraceña.Size = new Size(356, 27);
+            textContraceña.Size = new Size(312, 23);
             textContraceña.TabIndex = 5;
             textContraceña.UseSystemPasswordChar = true;
             textContraceña.TextChanged += textContraceña_TextChanged;
@@ -91,18 +87,17 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(257, 413);
+            label3.Location = new Point(225, 310);
             label3.Name = "label3";
-            label3.Size = new Size(0, 20);
+            label3.Size = new Size(0, 15);
             label3.TabIndex = 6;
             label3.Click += label3_Click;
             // 
             // BtnRegistro
             // 
-            BtnRegistro.Location = new Point(257, 441);
-            BtnRegistro.Margin = new Padding(3, 4, 3, 4);
+            BtnRegistro.Location = new Point(225, 331);
             BtnRegistro.Name = "BtnRegistro";
-            BtnRegistro.Size = new Size(171, 44);
+            BtnRegistro.Size = new Size(150, 33);
             BtnRegistro.TabIndex = 7;
             BtnRegistro.Text = "Registrarse";
             BtnRegistro.UseVisualStyleBackColor = true;
@@ -110,10 +105,9 @@
             // 
             // BtonINISesion
             // 
-            BtonINISesion.Location = new Point(435, 441);
-            BtonINISesion.Margin = new Padding(3, 4, 3, 4);
+            BtonINISesion.Location = new Point(381, 331);
             BtonINISesion.Name = "BtonINISesion";
-            BtonINISesion.Size = new Size(178, 44);
+            BtonINISesion.Size = new Size(156, 33);
             BtonINISesion.TabIndex = 8;
             BtonINISesion.Text = "Iniciar Sesión";
             BtonINISesion.UseVisualStyleBackColor = true;
@@ -123,10 +117,9 @@
             // 
             BtonOlvidoContra.FlatAppearance.BorderSize = 0;
             BtonOlvidoContra.FlatStyle = FlatStyle.Flat;
-            BtonOlvidoContra.Location = new Point(248, 401);
-            BtonOlvidoContra.Margin = new Padding(3, 4, 3, 4);
+            BtonOlvidoContra.Location = new Point(217, 301);
             BtonOlvidoContra.Name = "BtonOlvidoContra";
-            BtonOlvidoContra.Size = new Size(189, 32);
+            BtonOlvidoContra.Size = new Size(165, 24);
             BtonOlvidoContra.TabIndex = 9;
             BtonOlvidoContra.Text = "¿Olvidó su contraseña?";
             BtonOlvidoContra.UseVisualStyleBackColor = true;
@@ -134,9 +127,9 @@
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
+            ClientSize = new Size(800, 450);
             Controls.Add(BtonOlvidoContra);
             Controls.Add(BtonINISesion);
             Controls.Add(BtnRegistro);
@@ -146,7 +139,6 @@
             Controls.Add(label1);
             Controls.Add(TextCorreoElectronico);
             Controls.Add(pictureBox1);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;

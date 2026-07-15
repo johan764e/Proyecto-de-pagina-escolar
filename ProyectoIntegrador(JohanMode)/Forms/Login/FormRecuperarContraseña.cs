@@ -14,5 +14,10 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
         {
             InitializeComponent();
         }
+
+        private void FormRecuperarContraseña_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
