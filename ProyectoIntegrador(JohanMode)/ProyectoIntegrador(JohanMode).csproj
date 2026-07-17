@@ -10,7 +10,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\IconAdjuntar.png" Link="Recursos\Iconografia\IconAdjuntar.png" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\IconEditar.png" Link="Recursos\Iconografia\IconEditar.png" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\IconEntrega.png" Link="Recursos\Iconografia\IconEntrega.png" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaBasededatos.png" Link="Recursos\IconosMateria\MateriaBasededatos.png" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaDiseñoGFC.jpg" Link="Recursos\IconosMateria\MateriaDiseñoGFC.jpg" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaIngles.jpg" Link="Recursos\IconosMateria\MateriaIngles.jpg" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaIntegradora.png" Link="Recursos\IconosMateria\MateriaIntegradora.png" />
+    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaProgramacion.png" Link="Recursos\IconosMateria\MateriaProgramacion.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Configuracion\" />
+    <Folder Include="Recursos\Iconografia\" />
+    <Folder Include="Recursos\IconosMateria\" />
     <Folder Include="Servicios\Autenticacion\" />
     <Folder Include="Servicios\Integraciones\" />
     <Folder Include="Servicios\Utilidades\" />
@@ -18,6 +31,21 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="7.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

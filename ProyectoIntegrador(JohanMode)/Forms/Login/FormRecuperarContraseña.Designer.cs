@@ -28,34 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            btnHamburguesa = new Button();
-            PnlMENU = new Panel();
             SuspendLayout();
-            // 
-            // btnHamburguesa
-            // 
-            btnHamburguesa.Location = new Point(12, 18);
-            btnHamburguesa.Name = "btnHamburguesa";
-            btnHamburguesa.Size = new Size(47, 40);
-            btnHamburguesa.TabIndex = 1;
-            btnHamburguesa.Text = "button1";
-            btnHamburguesa.UseVisualStyleBackColor = true;
-            // 
-            // PnlMENU
-            // 
-            PnlMENU.Location = new Point(12, 64);
-            PnlMENU.Name = "PnlMENU";
-            PnlMENU.Size = new Size(208, 457);
-            PnlMENU.TabIndex = 2;
             // 
             // FormRecuperarContraseña
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(914, 600);
-            Controls.Add(PnlMENU);
-            Controls.Add(btnHamburguesa);
-            Margin = new Padding(3, 4, 3, 4);
+            ClientSize = new Size(800, 450);
             Name = "FormRecuperarContraseña";
             Text = "Form1";
             Load += FormRecuperarContraseña_Load;
@@ -65,7 +44,5 @@
         #endregion
 
         private Panel panel1;
-        private Button btnHamburguesa;
-        private Panel PnlMENU;
     }
 }

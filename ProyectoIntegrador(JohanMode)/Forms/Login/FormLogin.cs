@@ -2,6 +2,7 @@ using Microsoft.Data.SqlClient;
 using ProyectoIntegrador.Datos;
 using ProyectoIntegrador_JohanMode_.Datos;
 using ProyectoIntegrador_JohanMode_.Forms.Login;
+using ProyectoIntegrador_JohanMode_.Forms.Principal;
 
 namespace ProyectoIntegrador_JohanMode_
 {
@@ -68,6 +69,7 @@ namespace ProyectoIntegrador_JohanMode_
 
         private void BtonINISesion_Click(object sender, EventArgs e)
         {
+           
             // 1. Validamos usando los nuevos nombres de tus cuadros de texto
             if (string.IsNullOrWhiteSpace(TextCorreoElectronico.Text) || string.IsNullOrWhiteSpace(textContraceña.Text))
             {
@@ -84,8 +86,17 @@ namespace ProyectoIntegrador_JohanMode_
             if (accesoConcedido)
             {
                 MessageBox.Show("¡Bienvenido al sistema!", "Acceso concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // aqui se inicia la pantalla de inicio
+                FormInicio inicio = new FormInicio();
 
-                // Aquí puedes abrir tu pantalla principal cuando la tengas lista
+                // Ocultamos el login temporalmente
+                this.Hide();
+
+                // Mostramos el menú principal con su menú de hamburguesa
+                inicio.ShowDialog();
+
+                // Si se cierra el FormInicio, cerramos la aplicación por completo
+                this.Close();
             }
             else
             {
