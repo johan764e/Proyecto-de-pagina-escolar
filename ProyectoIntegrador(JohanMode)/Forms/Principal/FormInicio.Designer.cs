@@ -46,6 +46,17 @@
             pnlMenu = new Panel();
             btnHamburguesa = new Button();
             timerMenu = new System.Windows.Forms.Timer(components);
+            BtonAvisos = new Button();
+            BtnInicio = new Button();
+            BtnAsesorias = new Button();
+            BtnCalendario = new Button();
+            BtnPerfil = new Button();
+            BtnCerrarSesion = new Button();
+            panelnotificasiones = new FlowLayoutPanel();
+            panel4 = new Panel();
+            Notificaciones = new Label();
+            imgPerfil = new PictureBox();
+            NombredeUsuario = new Label();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picMateria2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)picMateria4).BeginInit();
@@ -54,6 +65,9 @@
             ((System.ComponentModel.ISupportInitialize)picMateria3).BeginInit();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)picMateria1).BeginInit();
+            pnlMenu.SuspendLayout();
+            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)imgPerfil).BeginInit();
             SuspendLayout();
             // 
             // panel2
@@ -79,7 +93,7 @@
             picMateria2.BorderStyle = BorderStyle.FixedSingle;
             picMateria2.Location = new Point(535, 121);
             picMateria2.Name = "picMateria2";
-            picMateria2.Size = new Size(249, 124);
+            picMateria2.Size = new Size(249, 125);
             picMateria2.SizeMode = PictureBoxSizeMode.StretchImage;
             picMateria2.TabIndex = 9;
             picMateria2.TabStop = false;
@@ -90,7 +104,7 @@
             picMateria4.BorderStyle = BorderStyle.FixedSingle;
             picMateria4.Location = new Point(535, 301);
             picMateria4.Name = "picMateria4";
-            picMateria4.Size = new Size(249, 132);
+            picMateria4.Size = new Size(249, 133);
             picMateria4.SizeMode = PictureBoxSizeMode.StretchImage;
             picMateria4.TabIndex = 15;
             picMateria4.TabStop = false;
@@ -157,7 +171,7 @@
             picMateria3.BorderStyle = BorderStyle.FixedSingle;
             picMateria3.Location = new Point(261, 301);
             picMateria3.Name = "picMateria3";
-            picMateria3.Size = new Size(249, 132);
+            picMateria3.Size = new Size(249, 133);
             picMateria3.SizeMode = PictureBoxSizeMode.StretchImage;
             picMateria3.TabIndex = 19;
             picMateria3.TabStop = false;
@@ -186,7 +200,7 @@
             picMateria1.BorderStyle = BorderStyle.FixedSingle;
             picMateria1.Location = new Point(261, 121);
             picMateria1.Name = "picMateria1";
-            picMateria1.Size = new Size(249, 124);
+            picMateria1.Size = new Size(249, 125);
             picMateria1.SizeMode = PictureBoxSizeMode.StretchImage;
             picMateria1.TabIndex = 17;
             picMateria1.TabStop = false;
@@ -194,17 +208,18 @@
             // 
             // pnlMenu
             // 
+            pnlMenu.Controls.Add(btnHamburguesa);
             pnlMenu.Dock = DockStyle.Left;
             pnlMenu.Location = new Point(0, 0);
             pnlMenu.Name = "pnlMenu";
-            pnlMenu.Size = new Size(60, 450);
+            pnlMenu.Size = new Size(59, 451);
             pnlMenu.TabIndex = 21;
             // 
             // btnHamburguesa
             // 
             btnHamburguesa.Location = new Point(0, 0);
             btnHamburguesa.Name = "btnHamburguesa";
-            btnHamburguesa.Size = new Size(60, 29);
+            btnHamburguesa.Size = new Size(59, 29);
             btnHamburguesa.TabIndex = 22;
             btnHamburguesa.Text = "☰";
             btnHamburguesa.UseVisualStyleBackColor = true;
@@ -214,12 +229,138 @@
             // 
             timerMenu.Tick += timerMenu_Tick_1;
             // 
+            // BtonAvisos
+            // 
+            BtonAvisos.Location = new Point(0, 87);
+            BtonAvisos.Name = "BtonAvisos";
+            BtonAvisos.Size = new Size(214, 41);
+            BtonAvisos.TabIndex = 24;
+            BtonAvisos.Text = "Avisos";
+            BtonAvisos.UseVisualStyleBackColor = true;
+            BtonAvisos.Visible = false;
+            BtonAvisos.Click += BtonAvisos_Click;
+            // 
+            // BtnInicio
+            // 
+            BtnInicio.Location = new Point(0, 40);
+            BtnInicio.Name = "BtnInicio";
+            BtnInicio.Size = new Size(214, 41);
+            BtnInicio.TabIndex = 25;
+            BtnInicio.Text = "Inicio";
+            BtnInicio.UseVisualStyleBackColor = true;
+            BtnInicio.Visible = false;
+            BtnInicio.Click += button1_Click;
+            // 
+            // BtnAsesorias
+            // 
+            BtnAsesorias.Location = new Point(0, 133);
+            BtnAsesorias.Name = "BtnAsesorias";
+            BtnAsesorias.Size = new Size(214, 41);
+            BtnAsesorias.TabIndex = 26;
+            BtnAsesorias.Text = "Asesorias";
+            BtnAsesorias.UseVisualStyleBackColor = true;
+            BtnAsesorias.Visible = false;
+            BtnAsesorias.Click += BtnAsesorias_Click;
+            // 
+            // BtnCalendario
+            // 
+            BtnCalendario.Location = new Point(0, 180);
+            BtnCalendario.Name = "BtnCalendario";
+            BtnCalendario.Size = new Size(214, 41);
+            BtnCalendario.TabIndex = 27;
+            BtnCalendario.Text = "Calendario Escolar";
+            BtnCalendario.UseVisualStyleBackColor = true;
+            BtnCalendario.Visible = false;
+            BtnCalendario.Click += BtnCalendario_Click;
+            // 
+            // BtnPerfil
+            // 
+            BtnPerfil.Location = new Point(0, 227);
+            BtnPerfil.Name = "BtnPerfil";
+            BtnPerfil.Size = new Size(214, 41);
+            BtnPerfil.TabIndex = 28;
+            BtnPerfil.Text = "Perfil";
+            BtnPerfil.UseVisualStyleBackColor = true;
+            BtnPerfil.Visible = false;
+            BtnPerfil.Click += BtnPerfil_Click;
+            // 
+            // BtnCerrarSesion
+            // 
+            BtnCerrarSesion.Location = new Point(0, 273);
+            BtnCerrarSesion.Name = "BtnCerrarSesion";
+            BtnCerrarSesion.Size = new Size(214, 41);
+            BtnCerrarSesion.TabIndex = 29;
+            BtnCerrarSesion.Text = "Cerrar Sesion";
+            BtnCerrarSesion.UseVisualStyleBackColor = true;
+            BtnCerrarSesion.Visible = false;
+            BtnCerrarSesion.Click += BtnCerrarSesion_Click;
+            // 
+            // panelnotificasiones
+            // 
+            panelnotificasiones.FlowDirection = FlowDirection.TopDown;
+            panelnotificasiones.Location = new Point(66, 121);
+            panelnotificasiones.Margin = new Padding(3, 4, 3, 4);
+            panelnotificasiones.Name = "panelnotificasiones";
+            panelnotificasiones.Size = new Size(158, 313);
+            panelnotificasiones.TabIndex = 30;
+            panelnotificasiones.Paint += flowLayoutPanel1_Paint;
+            // 
+            // panel4
+            // 
+            panel4.BorderStyle = BorderStyle.FixedSingle;
+            panel4.Controls.Add(Notificaciones);
+            panel4.Location = new Point(66, 77);
+            panel4.Name = "panel4";
+            panel4.Size = new Size(157, 38);
+            panel4.TabIndex = 19;
+            panel4.Paint += panel4_Paint;
+            // 
+            // Notificaciones
+            // 
+            Notificaciones.AutoSize = true;
+            Notificaciones.LiveSetting = System.Windows.Forms.Automation.AutomationLiveSetting.Polite;
+            Notificaciones.Location = new Point(33, 8);
+            Notificaciones.Name = "Notificaciones";
+            Notificaciones.Size = new Size(104, 20);
+            Notificaciones.TabIndex = 1;
+            Notificaciones.Text = "Notificaciones";
+            Notificaciones.Click += Notificaciones_Click;
+            // 
+            // imgPerfil
+            // 
+            imgPerfil.Location = new Point(721, 4);
+            imgPerfil.Margin = new Padding(3, 4, 3, 4);
+            imgPerfil.Name = "imgPerfil";
+            imgPerfil.Size = new Size(63, 67);
+            imgPerfil.TabIndex = 31;
+            imgPerfil.TabStop = false;
+            imgPerfil.Click += imgPerfil_Click;
+            // 
+            // NombredeUsuario
+            // 
+            NombredeUsuario.Location = new Point(525, 24);
+            NombredeUsuario.Name = "NombredeUsuario";
+            NombredeUsuario.Size = new Size(173, 31);
+            NombredeUsuario.TabIndex = 32;
+            NombredeUsuario.Text = "NombredeUsuario";
+            NombredeUsuario.TextAlign = ContentAlignment.MiddleCenter;
+            NombredeUsuario.Click += NombredeUsuario_Click;
+            // 
             // FormInicio
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(btnHamburguesa);
+            ClientSize = new Size(800, 451);
+            Controls.Add(NombredeUsuario);
+            Controls.Add(imgPerfil);
+            Controls.Add(panel4);
+            Controls.Add(panelnotificasiones);
+            Controls.Add(BtnCerrarSesion);
+            Controls.Add(BtnPerfil);
+            Controls.Add(BtnCalendario);
+            Controls.Add(BtnAsesorias);
+            Controls.Add(BtnInicio);
+            Controls.Add(BtonAvisos);
             Controls.Add(pnlMenu);
             Controls.Add(panel1);
             Controls.Add(picMateria3);
@@ -244,6 +385,10 @@
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)picMateria1).EndInit();
+            pnlMenu.ResumeLayout(false);
+            panel4.ResumeLayout(false);
+            panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)imgPerfil).EndInit();
             ResumeLayout(false);
         }
 
@@ -265,5 +410,16 @@
         private Panel pnlMenu;
         private Button btnHamburguesa;
         private System.Windows.Forms.Timer timerMenu;
+        private Button BtonAvisos;
+        private Button BtnInicio;
+        private Button BtnAsesorias;
+        private Button BtnCalendario;
+        private Button BtnPerfil;
+        private Button BtnCerrarSesion;
+        private FlowLayoutPanel panelnotificasiones;
+        private Panel panel4;
+        private Label Notificaciones;
+        private PictureBox imgPerfil;
+        private Label NombredeUsuario;
     }
 }

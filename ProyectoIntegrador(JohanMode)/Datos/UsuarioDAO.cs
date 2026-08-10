@@ -1,22 +1,24 @@
 ﻿using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Text;
+using System.Windows.Forms;
 using static System.Collections.Specialized.BitVector32;
 
 namespace ProyectoIntegrador_JohanMode_.Datos
 {
-
     public class UsuarioDAO
     {
         // 1. ACTUALIZADO: Cambiado 'localhost' por tu servidor real 'JOHAN' para asegurar la conexión
         private string conexionString = @"Server=JOHAN;Database=ProyectoIntegradorV1;Trusted_Connection=True;TrustServerCertificate=True;";
 
+
         // === MÉTODO 1: REGISTRAR UN USUARIO NUEVO ===
         public bool RegistrarUsuario(string nombre, string correo, string contrasena, string grupo)
         {
-            // Nota: Si en el futuro agregas la columna 'IdGrupo' a tu tabla 'USUARIOS',
-            // recuerda incluirla en este INSERT.
+
             string query = "INSERT INTO USUARIOS (Nombre, Correo, Contraseña, FechaRegistro) " +
                            "VALUES (@Nombre, @Correo, @Contraseña, @FechaRegistro)";
 
@@ -47,9 +49,8 @@ namespace ProyectoIntegrador_JohanMode_.Datos
         // === MÉTODO 2: VALIDAR EL INICIO DE SESIÓN (ACTUALIZADO) ===
         public bool ValidarUsuario(string correo, string contrasena)
         {
-            // 2. ACTUALIZADO: En lugar de un COUNT, traemos los datos clave del alumno (ID, Nombre y Grupo)
-            // Nota: Si tu columna de grupo en la base de datos se llama diferente a 'IdGrupo', cámbiala aquí.
-            string query = "SELECT IdUsuario, Nombre, IdGrupo FROM USUARIOS WHERE Correo = @Correo AND Contraseña = @Contraseña";
+            // Cambiado RutaFoto por FotoPerfil para coincidir exacto con tu diagrama
+            string query = "SELECT IdUsuario, Nombre, IdGrupo, FotoPerfil FROM USUARIOS WHERE Correo = @Correo AND Contraseña = @Contraseña";
 
             using (SqlConnection con = new SqlConnection(conexionString))
             {
@@ -65,15 +66,14 @@ namespace ProyectoIntegrador_JohanMode_.Datos
                         {
                             if (lector.Read())
                             {
-                                // 3. ACTUALIZADO: Almacenamos los datos en la sesión global para que 
-                                // FormContenidoMateria sepa a quién pertenece la entrega y qué tareas mostrar.
                                 Sesion.IdUsuario = Convert.ToInt32(lector["IdUsuario"]);
                                 Sesion.NombreUsuario = lector["Nombre"].ToString();
-
-                                // Manejo de nulos por si el usuario recién registrado aún no tiene grupo asignado
                                 Sesion.IdGrupo = lector["IdGrupo"] != DBNull.Value ? Convert.ToInt32(lector["IdGrupo"]) : 0;
 
-                                return true; // Login exitoso y sesión iniciada
+                                // Lee la columna FotoPerfil de la BD
+                                Sesion.FotoPerfil = CargarFotoPerfil(lector["FotoPerfil"]);
+
+                                return true;
                             }
                         }
                     }
@@ -84,7 +84,51 @@ namespace ProyectoIntegrador_JohanMode_.Datos
                     }
                 }
             }
-            return false; // Credenciales incorrectas
+
+            return false;
+        }
+
+        private Image CargarFotoPerfil(object valorRutaFoto)
+        {
+            string rutaFotoBD = valorRutaFoto != DBNull.Value ? valorRutaFoto.ToString() : "";
+
+            if (!string.IsNullOrEmpty(rutaFotoBD) && File.Exists(rutaFotoBD))
+            {
+                try
+                {
+                    // Carga la foto sin bloquear el archivo original
+                    using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(rutaFotoBD)))
+                    {
+                        return Image.FromStream(ms);
+                    }
+                }
+                catch
+                {
+                    return CargarFotoDefecto();
+                }
+            }
+
+            return CargarFotoDefecto();
+        }
+
+        private Image CargarFotoDefecto()
+        {
+            try
+            {
+                // Busca la imagen directamente dentro del directorio de compilación generado por Visual Studio
+                string rutaRelativa = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Recursos", "Iconografia", "imagengenericapng.png");
+
+                if (File.Exists(rutaRelativa))
+                {
+                    using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(rutaRelativa)))
+                    {
+                        return Image.FromStream(ms);
+                    }
+                }
+            }
+            catch { }
+
+            return null;
         }
     }
 }

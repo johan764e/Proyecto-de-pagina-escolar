@@ -10,6 +10,7 @@ namespace ProyectoIntegrador_JohanMode_.Datos
         public static int IdUsuario { get; set; }
         public static string NombreUsuario { get; set; }
         public static int IdGrupo { get; set; }
+        public static Image FotoPerfil { get; set; }
 
         // Método opcional para limpiar la sesión al cerrar sesión
         public static void CerrarSesion()

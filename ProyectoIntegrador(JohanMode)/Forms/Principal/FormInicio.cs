@@ -1,4 +1,7 @@
-﻿using ProyectoIntegrador_JohanMode_.Forms.Materias;
+﻿using ProyectoIntegrador_JohanMode_.Datos;
+using ProyectoIntegrador_JohanMode_.Forms.Login;
+using ProyectoIntegrador_JohanMode_.Forms.Calendario;
+using ProyectoIntegrador_JohanMode_.Forms.Materias;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +9,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using ProyectoIntegrador_JohanMode_.Forms.Avisos;
+using ProyectoIntegrador_JohanMode_.Forms.Asesorias;
+
 
 namespace ProyectoIntegrador_JohanMode_.Forms.Principal
 {
@@ -14,6 +20,26 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         private bool menuCerrado = true;    // El menú inicia cerrado
         private const int AnchoMinimo = 60;  // Ancho del panel cuando solo se ve el botón ☰
         private readonly string rutaDesarrollo = @"C:\Users\johan\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\";
+        private void FormInicio_Load(object sender, EventArgs e)
+        {
+            if (Sesion.FotoPerfil != null)
+            {
+                imgPerfil.Image = Sesion.FotoPerfil;
+                MessageBox.Show("¡Foto de perfil asignada correctamente!", "Prueba");
+            }
+            else
+            {
+                MessageBox.Show("Sesion.FotoPerfil es NULL. La imagen no se leyó bien en el Login.", "Error de Diagnóstico");
+            }
+
+            imgPerfil.Image = Sesion.FotoPerfil;
+            NombredeUsuario.Text = Sesion.NombreUsuario;
+
+            if (Sesion.FotoPerfil != null)
+            {
+                imgPerfil.Image = Sesion.FotoPerfil;
+            }
+        }
         public FormInicio()
         {
             InitializeComponent();
@@ -22,10 +48,14 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
             pnlMenu.Width = AnchoMinimo;
             // carga las imágenes de las materias al iniciar el formulario
             CargarImagenesMaterias();
+
+
         }
         private void btnHamburguesa_Click(object sender, EventArgs e)
         {
             timerMenu.Start();
+
+
         }
         // 2. Evento Tick del Timer (se ejecuta repetidamente para animar)
         private void timerMenu_Tick_1(object sender, EventArgs e)
@@ -59,6 +89,21 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
                     timerMenu.Stop();
                 }
             }
+            // Cambiamos la visibilidad de los botones según el estado del menú
+            bool mostrarMenu = !BtnInicio.Visible;
+            //Se muestra y se oculta al tocar el boton
+            BtnInicio.Visible = !BtnInicio.Visible;
+            BtnPerfil.Visible = !BtnPerfil.Visible;
+            BtnCalendario.Visible = !BtnCalendario.Visible;
+            BtnAsesorias.Visible = !BtnAsesorias.Visible;
+            BtonAvisos.Visible = !BtonAvisos.Visible;
+            BtnCerrarSesion.Visible = !BtnCerrarSesion.Visible;
+            // se oculta y se muestra al presionar el btn
+            panelnotificasiones.Visible = !mostrarMenu;
+            panel4.Visible = !mostrarMenu;
+           
+
+
         }
 
         private void CargarImagenesMaterias()
@@ -97,14 +142,14 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         {
             try
             {
-                // 1. Buscamos primero en tu carpeta absoluta de descargas
+                // 1. Busca primero en tu carpeta absoluta de descargas
                 string rutaAbsoluta = Path.Combine(rutaDesarrollo, nombreArchivo);
                 if (File.Exists(rutaAbsoluta))
                 {
                     return Image.FromFile(rutaAbsoluta);
                 }
 
-                // 2. Buscamos en la carpeta local del proyecto si lo corres en otra PC
+                // 2. Busca en la carpeta local del proyecto si lo corres en otra PC
                 string rutaLocal = Path.Combine(Application.StartupPath, "Resources", nombreArchivo);
                 if (File.Exists(rutaLocal))
                 {
@@ -118,7 +163,7 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
 
             return null; // Si no la encuentra, se queda el espacio en gris sin crashear
         }
-       
+
         private void AbrirMateria(int idMateria, string nombreMateria, string archivoImagen)
         {
             FormContenidoMateria pantallaMateria = new FormContenidoMateria(idMateria, nombreMateria, archivoImagen);
@@ -127,10 +172,7 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
             pantallaMateria.ShowDialog();
             this.Show();
         }
-        private void FormInicio_Load(object sender, EventArgs e)
-        {
 
-        }
 
         private void picMateria2_Click_1(object sender, EventArgs e)
         {
@@ -150,6 +192,93 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         private void picMateria4_Click_1(object sender, EventArgs e)
         {
             AbrirMateria(4, "Integradora", "MateriaIntegradora.png");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+        private void BtnInicio_Click(object sender, EventArgs e)
+        {
+            FormInicio formInicio = new FormInicio();
+            formInicio.Show();
+        }
+
+        private void BtonAvisos_Click(object sender, EventArgs e)
+        {
+            FormAvisos formAvisos = new FormAvisos();
+            formAvisos.Show();
+        }
+
+        private void BtnAsesorias_Click(object sender, EventArgs e)
+        {
+            FormAsesorias formAsesorias = new FormAsesorias();
+            formAsesorias.Show();
+        }
+
+        private void BtnCalendario_Click(object sender, EventArgs e)
+        {
+            FormCalendario formCalendario = new FormCalendario();
+            formCalendario.Show();
+        }
+
+        private void BtnPerfil_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            //Confirma si el usuario realmente desea salir
+            DialogResult resultado = MessageBox.Show(
+                "¿Estás seguro de que deseas cerrar sesión?",
+                "Confirmar Cierre de Sesión",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (resultado == DialogResult.Yes)
+            {
+                // Limpia las variables de la sesión global
+                Sesion.IdUsuario = 0;
+                Sesion.NombreUsuario = string.Empty;
+                Sesion.IdGrupo = 0;
+                Sesion.FotoPerfil = null;
+
+                //Crear e instanciar la pantalla de Login
+                ProyectoIntegrador_JohanMode_.Form1 login = new ProyectoIntegrador_JohanMode_.Form1();
+                login.Show();
+
+
+                //Cerrar el formulario actual
+                this.Close();
+            }
+        }
+
+
+        private void flowLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void imgPerfil_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void NombredeUsuario_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void Notificaciones_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

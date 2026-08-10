@@ -6,16 +6,16 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
-namespace ProyectoIntegrador_JohanMode_.Forms.Perfil
+namespace ProyectoIntegrador_JohanMode_.Forms.Avisos
 {
-    public partial class FormPerfil : Form
+    public partial class FormAvisos : Form
     {
-        public FormPerfil()
+        public FormAvisos()
         {
             InitializeComponent();
         }
 
-        private void FormPerfil_Load(object sender, EventArgs e)
+        private void FormAvisos_Load(object sender, EventArgs e)
         {
 
         }

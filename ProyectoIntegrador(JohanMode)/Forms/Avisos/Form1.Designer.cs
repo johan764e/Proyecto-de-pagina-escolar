@@ -1,6 +1,6 @@
-﻿namespace ProyectoIntegrador_JohanMode_.Forms.Perfil
+﻿namespace ProyectoIntegrador_JohanMode_.Forms.Avisos
 {
-    partial class FormPerfil
+    partial class FormAvisos
     {
         /// <summary>
         /// Required designer variable.
@@ -30,14 +30,14 @@
         {
             SuspendLayout();
             // 
-            // FormPerfil
+            // FormAvisos
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
-            Name = "FormPerfil";
-            Text = "Form1";
-            Load += FormPerfil_Load;
+            Name = "FormAvisos";
+            Text = "Avisos";
+            Load += FormAvisos_Load;
             ResumeLayout(false);
         }
 
