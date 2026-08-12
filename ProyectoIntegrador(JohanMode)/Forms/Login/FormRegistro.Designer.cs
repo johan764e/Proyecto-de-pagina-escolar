@@ -41,6 +41,7 @@
             BtnRegresar = new Button();
             BtnRegistrar2 = new Button();
             Chistepdf = new LinkLabel();
+            ProfesorCheck = new CheckBox();
             SuspendLayout();
             // 
             // textNMCM
@@ -137,6 +138,7 @@
             label5.Size = new Size(54, 21);
             label5.TabIndex = 9;
             label5.Text = "Grupo";
+            label5.Click += label5_Click;
             // 
             // txtGrup
             // 
@@ -185,11 +187,23 @@
             Chistepdf.Text = "REGISTRO";
             Chistepdf.LinkClicked += Chistepdf_LinkClicked;
             // 
+            // ProfesorCheck
+            // 
+            ProfesorCheck.AutoSize = true;
+            ProfesorCheck.Location = new Point(640, 348);
+            ProfesorCheck.Name = "ProfesorCheck";
+            ProfesorCheck.Size = new Size(70, 19);
+            ProfesorCheck.TabIndex = 13;
+            ProfesorCheck.Text = "Profesor";
+            ProfesorCheck.UseVisualStyleBackColor = true;
+            ProfesorCheck.CheckedChanged += ProfesorCheck_CheckedChanged;
+            // 
             // FormRegistro
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(796, 457);
+            Controls.Add(ProfesorCheck);
             Controls.Add(Chistepdf);
             Controls.Add(BtnRegistrar2);
             Controls.Add(BtnRegresar);
@@ -226,5 +240,6 @@
         private Button BtnRegresar;
         private Button BtnRegistrar2;
         private LinkLabel Chistepdf;
+        private CheckBox ProfesorCheck;
     }
 }

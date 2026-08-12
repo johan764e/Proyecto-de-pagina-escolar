@@ -10,9 +10,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Recursos\Iconografia\IconEntrega.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\IconAdjuntar.png" Link="Recursos\Iconografia\IconAdjuntar.png" />
     <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\IconEditar.png" Link="Recursos\Iconografia\IconEditar.png" />
-    <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\IconEntrega.png" Link="Recursos\Iconografia\IconEntrega.png" />
     <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaBasededatos.png" Link="Recursos\IconosMateria\MateriaBasededatos.png" />
     <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaDiseñoGFC.jpg" Link="Recursos\IconosMateria\MateriaDiseñoGFC.jpg" />
     <Content Include="..\..\..\..\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\MateriaIngles.jpg" Link="Recursos\IconosMateria\MateriaIngles.jpg" />

@@ -69,34 +69,31 @@ namespace ProyectoIntegrador_JohanMode_
 
         private void BtonINISesion_Click(object sender, EventArgs e)
         {
-           
-            // 1. Validamos usando los nuevos nombres de tus cuadros de texto
+
+            // Esta parte valida que los campos no estén vacíos
             if (string.IsNullOrWhiteSpace(TextCorreoElectronico.Text) || string.IsNullOrWhiteSpace(textContraceña.Text))
             {
                 MessageBox.Show("Por favor, introduce tu correo y contraseña.", "Campos vacíos", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. Instanciamos la clase de datos (UsuarioDAO)
             UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-            // 3. Consultamos la base de datos usando tus TextBox
+            // Esta parte consulta la base de datos y asigna la sesión
             bool accesoConcedido = usuarioDAO.ValidarUsuario(TextCorreoElectronico.Text.Trim(), textContraceña.Text.Trim());
 
             if (accesoConcedido)
             {
-                MessageBox.Show("¡Bienvenido al sistema!", "Acceso concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                // aqui se inicia la pantalla de inicio
+                MessageBox.Show($"¡Bienvenido {Sesion.NombreUsuario}! (Rol: {Sesion.Rol})", "Acceso concedido", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Esta parte crea la nueva ventana del menú principal
                 FormInicio inicio = new FormInicio();
 
-                // Ocultamos el login temporalmente
+                // Muestra la pantalla principal primero
+                inicio.Show();
+
+                // Oculta la pantalla de login actual
                 this.Hide();
-
-                // Mostramos el menú principal con su menú de hamburguesa
-                inicio.ShowDialog();
-
-                // Si se cierra el FormInicio, cerramos la aplicación por completo
-                this.Close();
             }
             else
             {

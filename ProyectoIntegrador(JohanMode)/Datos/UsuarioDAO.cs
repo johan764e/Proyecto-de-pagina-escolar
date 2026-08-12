@@ -11,16 +11,15 @@ namespace ProyectoIntegrador_JohanMode_.Datos
 {
     public class UsuarioDAO
     {
-        // 1. ACTUALIZADO: Cambiado 'localhost' por tu servidor real 'JOHAN' para asegurar la conexión
+        // Se declara la cadena de conexión a la base de datos
         private string conexionString = @"Server=JOHAN;Database=ProyectoIntegradorV1;Trusted_Connection=True;TrustServerCertificate=True;";
 
-
-        // === MÉTODO 1: REGISTRAR UN USUARIO NUEVO ===
-        public bool RegistrarUsuario(string nombre, string correo, string contrasena, string grupo)
+        // Esta parte registra un usuario nuevo guardando también si es Alumno o Profesor
+        public bool RegistrarUsuario(string nombre, string correo, string contrasena, string grupo, string rol)
         {
-
-            string query = "INSERT INTO USUARIOS (Nombre, Correo, Contraseña, FechaRegistro) " +
-                           "VALUES (@Nombre, @Correo, @Contraseña, @FechaRegistro)";
+            // Se agrega el campo Rol en la consulta para guardarlo en la base de datos
+            string query = "INSERT INTO USUARIOS (Nombre, Correo, Contraseña, FechaRegistro, Rol) " +
+                           "VALUES (@Nombre, @Correo, @Contraseña, @FechaRegistro, @Rol)";
 
             using (SqlConnection con = new SqlConnection(conexionString))
             {
@@ -30,6 +29,7 @@ namespace ProyectoIntegrador_JohanMode_.Datos
                     cmd.Parameters.AddWithValue("@Correo", correo);
                     cmd.Parameters.AddWithValue("@Contraseña", contrasena);
                     cmd.Parameters.AddWithValue("@FechaRegistro", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@Rol", rol); // Guarda si es Alumno o Profesor
 
                     try
                     {
@@ -46,11 +46,11 @@ namespace ProyectoIntegrador_JohanMode_.Datos
             }
         }
 
-        // === MÉTODO 2: VALIDAR EL INICIO DE SESIÓN (ACTUALIZADO) ===
+        // Esta parte valida el correo y contraseña, y trae el Rol para guardarlo en la Sesion
         public bool ValidarUsuario(string correo, string contrasena)
         {
-            // Cambiado RutaFoto por FotoPerfil para coincidir exacto con tu diagrama
-            string query = "SELECT IdUsuario, Nombre, IdGrupo, FotoPerfil FROM USUARIOS WHERE Correo = @Correo AND Contraseña = @Contraseña";
+            // Se agrega el campo Rol en la consulta SQL
+            string query = "SELECT IdUsuario, Nombre, IdGrupo, FotoPerfil, Rol FROM USUARIOS WHERE Correo = @Correo AND Contraseña = @Contraseña";
 
             using (SqlConnection con = new SqlConnection(conexionString))
             {
@@ -70,7 +70,10 @@ namespace ProyectoIntegrador_JohanMode_.Datos
                                 Sesion.NombreUsuario = lector["Nombre"].ToString();
                                 Sesion.IdGrupo = lector["IdGrupo"] != DBNull.Value ? Convert.ToInt32(lector["IdGrupo"]) : 0;
 
-                                // Lee la columna FotoPerfil de la BD
+                                // Asigna el rol obtenido de la base de datos a la clase Sesion
+                                Sesion.Rol = lector["Rol"] != DBNull.Value ? lector["Rol"].ToString() : "Alumno";
+
+                                // Carga la foto guardada
                                 Sesion.FotoPerfil = CargarFotoPerfil(lector["FotoPerfil"]);
 
                                 return true;
@@ -88,6 +91,7 @@ namespace ProyectoIntegrador_JohanMode_.Datos
             return false;
         }
 
+        // Esta parte busca y carga la foto de perfil en la ruta
         private Image CargarFotoPerfil(object valorRutaFoto)
         {
             string rutaFotoBD = valorRutaFoto != DBNull.Value ? valorRutaFoto.ToString() : "";
@@ -96,7 +100,6 @@ namespace ProyectoIntegrador_JohanMode_.Datos
             {
                 try
                 {
-                    // Carga la foto sin bloquear el archivo original
                     using (MemoryStream ms = new MemoryStream(File.ReadAllBytes(rutaFotoBD)))
                     {
                         return Image.FromStream(ms);
@@ -111,11 +114,11 @@ namespace ProyectoIntegrador_JohanMode_.Datos
             return CargarFotoDefecto();
         }
 
+        // Esta parte carga la imagen genérica si el usuario no tiene foto
         private Image CargarFotoDefecto()
         {
             try
             {
-                // Busca la imagen directamente dentro del directorio de compilación generado por Visual Studio
                 string rutaRelativa = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Recursos", "Iconografia", "imagengenericapng.png");
 
                 if (File.Exists(rutaRelativa))

@@ -68,70 +68,77 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
             this.Close();
         }
 
-        private void BtnRegistrar2_Click(object sender, EventArgs e)
+            private void BtnRegistrar2_Click(object sender, EventArgs e)
         {
-            // 1. Validamos que el usuario no deje campos vacíos usando tus nombres de TextBox reales
-            if (string.IsNullOrWhiteSpace(textNMCM.Text) ||
-                string.IsNullOrWhiteSpace(txtCorreo2.Text) ||
-                string.IsNullOrWhiteSpace(txtContraceña.Text) ||
-                string.IsNullOrWhiteSpace(txtConfContra.Text) ||
-                string.IsNullOrWhiteSpace(txtGrup.Text))
+            // Esta parte determina el rol primero
+            string rolFinal = "Alumno";
+
+            if (ProfesorCheck.Checked)
             {
-                MessageBox.Show("Por favor, llena todos los campos.", "Campos pendientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                string claveIngresada = Microsoft.VisualBasic.Interaction.InputBox(
+                    "Ingresa la clave de autorización de profesor:",
+                    "Validación de Profesor",
+                    ""
+                );
+
+                string claveSecreta = "1234";
+
+                if (claveIngresada != claveSecreta)
+                {
+                    MessageBox.Show("La clave de profesor es incorrecta. No se completó el registro.", "Acceso denegado", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    ProfesorCheck.Checked = false;
+                    return;
+                }
+
+                rolFinal = "Profesor";
+            }
+
+            // Esta parte valida únicamente los campos requeridos según el rol
+            // Si es Profesor, NO se valida que txtGrup tenga texto
+            bool camposGeneralesVacios = string.IsNullOrWhiteSpace(textNMCM.Text) ||
+                                         string.IsNullOrWhiteSpace(txtCorreo2.Text) ||
+                                         string.IsNullOrWhiteSpace(txtContraceña.Text) ||
+                                         string.IsNullOrWhiteSpace(txtConfContra.Text);
+
+            bool grupoVacioSiEsAlumno = (rolFinal == "Alumno") && string.IsNullOrWhiteSpace(txtGrup.Text);
+
+            if (camposGeneralesVacios || grupoVacioSiEsAlumno)
+            {
+                MessageBox.Show("Por favor, llena todos los campos obligatorios.", "Campos pendientes", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 2. Validamos que la contraseña y la confirmación coincidan
+            // Esta parte valida que las contraseñas coincidan
             if (txtContraceña.Text != txtConfContra.Text)
             {
                 MessageBox.Show("Las contraseñas no coinciden. Por favor, verifícalas.", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            // 3. Instanciamos la clase de base de datos
-            UsuarioDAO usuarioDAO = new UsuarioDAO();
+            // Esta parte asigna "N/A" si es profesor para guardarlo en la base de datos
+            string grupoFinal = (rolFinal == "Profesor") ? "N/A" : txtGrup.Text.Trim();
 
-            // 4. Enviamos la información a registrar (pasando el grupo)
+            // Esta parte envía la información al UsuarioDAO
+            UsuarioDAO usuarioDAO = new UsuarioDAO();
             bool registroExitoso = usuarioDAO.RegistrarUsuario(
                 textNMCM.Text.Trim(),
                 txtCorreo2.Text.Trim(),
                 txtContraceña.Text.Trim(),
-                txtGrup.Text.Trim()
+                grupoFinal,
+                rolFinal
             );
 
-            // 5. Evaluamos la respuesta de la base de datos
             if (registroExitoso)
             {
-                MessageBox.Show("¡Usuario registrado con éxito!", "¡Listo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // 6. Redireccionamos limpiamente de vuelta al login usando la memoria de la aplicación
-                // Esto evita errores de compilación por namespaces incorrectos
-                bool loginAbierto = false;
-
-                foreach (Form frm in Application.OpenForms)
-                {
-                    if (frm.Name == "FormLogin")
-                    {
-                        frm.Show();
-                        loginAbierto = true;
-                        break;
-                    }
-                }
-
-                // En caso extremo de que el Login no estuviera cargado en memoria, lo iniciamos de forma segura
-                if (!loginAbierto)
-                {
-                    MessageBox.Show("Por favor, reinicie la aplicación para iniciar sesión.", "Registro completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-
-                // Destruimos la pantalla de registro de la memoria RAM para evitar que el programa se ponga lento
-                this.Dispose();
+                MessageBox.Show($"¡Usuario registrado con éxito como {rolFinal}!", "¡Listo!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
             }
             else
             {
                 MessageBox.Show("No se pudo guardar el usuario. Revisa tu conexión a la base de datos.", "Error de registro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+        
 
         private void label4_Click(object sender, EventArgs e)
         {
@@ -143,6 +150,26 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Login
 
         }
 
-       
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ProfesorCheck_CheckedChanged(object sender, EventArgs e)
+        {
+
+            txtGrup.Enabled = !ProfesorCheck.Checked;
+            label5.Visible = !ProfesorCheck.Checked;
+
+            if (ProfesorCheck.Checked)
+            {
+                txtGrup.Clear();
+            }
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -20,81 +20,67 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         private bool menuCerrado = true;    // El menú inicia cerrado
         private const int AnchoMinimo = 60;  // Ancho del panel cuando solo se ve el botón ☰
         private readonly string rutaDesarrollo = @"C:\Users\johan\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\";
-        private void FormInicio_Load(object sender, EventArgs e)
+        private async void FormInicio_Load(object sender, EventArgs e)
         {
-            if (Sesion.FotoPerfil != null)
-            {
-                imgPerfil.Image = Sesion.FotoPerfil;
-                MessageBox.Show("¡Foto de perfil asignada correctamente!", "Prueba");
-            }
-            else
-            {
-                MessageBox.Show("Sesion.FotoPerfil es NULL. La imagen no se leyó bien en el Login.", "Error de Diagnóstico");
-            }
-
-            imgPerfil.Image = Sesion.FotoPerfil;
             NombredeUsuario.Text = Sesion.NombreUsuario;
 
             if (Sesion.FotoPerfil != null)
             {
                 imgPerfil.Image = Sesion.FotoPerfil;
             }
+
+            // Carga asíncrona de recursos
+            await CargarImagenesMateriasAsync();
+        }
+
+        private async Task CargarImagenesMateriasAsync()
+        {
+            // Ejecución en hilo secundario
+            Image img1 = await Task.Run(() => ObtenerImagenReal("MateriaProgramacion.png"));
+            Image img2 = await Task.Run(() => ObtenerImagenReal("MateriaBasededatos.png"));
+            Image img3 = await Task.Run(() => ObtenerImagenReal("MateriaDiseñoGFC.jpg"));
+            Image img4 = await Task.Run(() => ObtenerImagenReal("MateriaIntegradora.png"));
+
+            picMateria1.Image = img1;
+            picMateria2.Image = img2;
+            picMateria3.Image = img3;
+            picMateria4.Image = img4;
         }
         public FormInicio()
         {
             InitializeComponent();
+
+            // Nos aseguramos de que empiece cerrado al cargar la pantalla
+            pnlMenu.Width = AnchoMinimo;
             // carga las imágenes de las materias al iniciar el formulario
             CargarImagenesMaterias();
 
-            Application.EnableVisualStyles();
-
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
-
 
         }
+        private bool menuAbierto = false;
         private void btnHamburguesa_Click(object sender, EventArgs e)
         {
-            menuCerrado = !menuCerrado;
+            menuAbierto = !menuAbierto;
 
-            // Cambiamos la visibilidad de los botones directamente
-            BtnInicio.Visible = !menuCerrado;
-            BtnPerfil.Visible = !menuCerrado;
-            BtnCalendario.Visible = !menuCerrado;
-            BtnAsesorias.Visible = !menuCerrado;
-            BtonAvisos.Visible = !menuCerrado;
-            BtnCerrarSesion.Visible = !menuCerrado;
+            // Botones del menú: aparecen o desaparecen de golpe
+            BtnInicio.Visible = menuAbierto;
+            BtnPerfil.Visible = menuAbierto;
+            BtnCalendario.Visible = menuAbierto;
+            BtnAsesorias.Visible = menuAbierto;
+            BtonAvisos.Visible = menuAbierto;
+            BtnCerrarSesion.Visible = menuAbierto;
 
-            // Paneles secundarios
-            panelnotificasiones.Visible = menuCerrado;
-            panel4.Visible = menuCerrado;
+            // Panel de notificaciones: comportamiento inverso
+            panelnotificasiones.Visible = !menuAbierto;
+            panel4.Visible = !menuAbierto;
 
+            pnlMenu.Width = menuAbierto ? 220 : 60;
         }
-
-
-
-        // Método auxiliar para limpiar tu código y evitar repeticiones
-        private void AlternarVisibilidadBotones(bool mostrar)
-        {
-            menuCerrado = !menuCerrado;
-
-            // Cambiamos la visibilidad de los botones directamente
-            BtnInicio.Visible = !menuCerrado;
-            BtnPerfil.Visible = !menuCerrado;
-            BtnCalendario.Visible = !menuCerrado;
-            BtnAsesorias.Visible = !menuCerrado;
-            BtonAvisos.Visible = !menuCerrado;
-            BtnCerrarSesion.Visible = !menuCerrado;
-
-            // Paneles secundarios
-            panelnotificasiones.Visible = menuCerrado;
-            panel4.Visible = menuCerrado;
-        }
-
+        
 
         private void CargarImagenesMaterias()
         {
-            // Asigna a cada uno de tus 4 PictureBox su respectiva imagen real
+            // Asignamos a cada uno de tus 4 PictureBox su respectiva imagen real
             picMateria1.Image = ObtenerImagenReal("MateriaProgramacion.png");
             picMateria2.Image = ObtenerImagenReal("MateriaBasededatos.png");
             picMateria3.Image = ObtenerImagenReal("MateriaDiseñoGFC.jpg");
@@ -128,26 +114,39 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         {
             try
             {
-                // 1. Busca primero en tu carpeta absoluta de descargas
+                string rutaFinal = null;
                 string rutaAbsoluta = Path.Combine(rutaDesarrollo, nombreArchivo);
+                string rutaLocal = Path.Combine(Application.StartupPath, "Resources", nombreArchivo);
+
                 if (File.Exists(rutaAbsoluta))
                 {
-                    return Image.FromFile(rutaAbsoluta);
+                    rutaFinal = rutaAbsoluta;
+                }
+                else if (File.Exists(rutaLocal))
+                {
+                    rutaFinal = rutaLocal;
                 }
 
-                // 2. Busca en la carpeta local del proyecto si lo corres en otra PC
-                string rutaLocal = Path.Combine(Application.StartupPath, "Resources", nombreArchivo);
-                if (File.Exists(rutaLocal))
+                if (rutaFinal != null)
                 {
-                    return Image.FromFile(rutaLocal);
+                    // Lectura en MemoryStream para evitar bloqueos de E/S
+                    using (FileStream fs = new FileStream(rutaFinal, FileMode.Open, FileAccess.Read))
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            fs.CopyTo(ms);
+                            ms.Position = 0;
+                            return Image.FromStream(ms);
+                        }
+                    }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error al cargar la imagen " + nombreArchivo + ": " + ex.Message);
+                Console.WriteLine($"Error al cargar {nombreArchivo}: {ex.Message}");
             }
 
-            return null; // Si no la encuentra, se queda el espacio en gris sin crashear
+            return null;
         }
 
         private void AbrirMateria(int idMateria, string nombreMateria, string archivoImagen)
@@ -263,11 +262,6 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         }
 
         private void Notificaciones_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void pnlMenu_Paint(object sender, PaintEventArgs e)
         {
 
         }

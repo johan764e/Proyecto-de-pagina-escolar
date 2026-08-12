@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Threading.Tasks;
 using System.Text;
 using System.Windows.Forms;
 
@@ -16,16 +18,13 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Materias
         {
             InitializeComponent();
         }
-        // Variables internas para los datos de la materia
+
         private int idMateria;
         private string nombreMateria;
         private string archivoImagen;
         private TareaDAO tareaDAO = new TareaDAO();
-
-        // Variable para guardar la ruta del archivo seleccionado temporalmente antes de subirlo
         private string rutaArchivoSeleccionado = "";
 
-        // Cadena de conexión a tu base de datos local
         private readonly string cadenaConexion = @"Server=JOHAN;Database=ProyectoIntegradorV1;Trusted_Connection=True;";
         private readonly string rutaDesarrollo = @"C:\Users\johan\Downloads\HarryParteIntegrador\HarryParteIntegrador\HarryParteIntegrador\Resources\";
 
@@ -37,82 +36,94 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Materias
             this.nombreMateria = nombre;
             this.archivoImagen = imagen;
 
-            // Inicializar textos en pantalla
+            // Inicialización liviana de textos
             if (lblTituloMateria != null)
             {
                 lblTituloMateria.Text = nombreMateria;
             }
             this.Text = "Contenido de - " + nombreMateria;
 
-            // Inicializar estado del archivo adjunto
             if (lblArchivoAdjunto != null)
             {
                 lblArchivoAdjunto.Text = "Ningún archivo seleccionado";
             }
-            // Cargar la imagen de la materia al iniciar el formulario
-            CargarImagenDeMateria();
-            CargarActividadPendiente();
         }
+
+        private async void FormContenidoMateria_Load(object sender, EventArgs e)
+        {
+            // Carga asíncrona en segundo plano para no congelar la UI
+            await Task.Run(() => CargarImagenDeMateria());
+            await Task.Run(() => CargarActividadPendiente());
+        }
+
         private void CargarActividadPendiente()
         {
             try
             {
-                // Llamamos al DAO en lugar de hacer la consulta SQL aquí
                 var tarea = tareaDAO.ObtenerTareaPendiente(idMateria, Sesion.IdGrupo);
 
-                if (tarea != null)
+                this.Invoke((MethodInvoker)delegate
                 {
-                    txtTitulo.Text = tarea.Titulo;
-                    txtDescripcion.Text = tarea.Descripcion;
+                    if (tarea != null)
+                    {
+                        txtTitulo.Text = tarea.Titulo;
+                        txtDescripcion.Text = tarea.Descripcion;
+                    }
+                    else
+                    {
+                        txtTitulo.Text = "Sin tareas pendientes";
+                        txtDescripcion.Text = "Tu docente no ha asignado actividades para este grupo todavía.";
+                    }
                     txtTitulo.ReadOnly = true;
                     txtDescripcion.ReadOnly = true;
-                }
-                else
-                {
-                    txtTitulo.Text = "Sin tareas pendientes";
-                    txtDescripcion.Text = "Tu docente no ha asignado actividades para este grupo todavía.";
-                    txtTitulo.ReadOnly = true;
-                    txtDescripcion.ReadOnly = true;
-                }
+                });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                // Si no hay conexión, usamos el Plan B de seguridad
-                txtTitulo.Text = "Avance de Proyecto Integrador";
-                txtDescripcion.Text = "Desarrollar la navegación principal de la aplicación Windows Forms.";
+                this.Invoke((MethodInvoker)delegate
+                {
+                    txtTitulo.Text = "Avance de Proyecto Integrador";
+                    txtDescripcion.Text = "Desarrollar la navegación principal de la aplicación Windows Forms.";
+                    txtTitulo.ReadOnly = true;
+                    txtDescripcion.ReadOnly = true;
+                });
             }
         }
+
         private void CargarImagenDeMateria()
         {
             try
             {
-                PictureBox picContenido = this.picMateria;
+                string rutaAbsoluta = Path.Combine(rutaDesarrollo, archivoImagen);
+                string rutaLocal = Path.Combine(Application.StartupPath, "Resources", archivoImagen);
+                string rutaFinal = File.Exists(rutaAbsoluta) ? rutaAbsoluta : (File.Exists(rutaLocal) ? rutaLocal : null);
 
-                if (picContenido != null)
+                if (rutaFinal != null)
                 {
-                    string rutaAbsoluta = Path.Combine(rutaDesarrollo, archivoImagen);
-                    if (File.Exists(rutaAbsoluta))
+                    // Lectura con MemoryStream para evitar bloqueos E/S de archivo
+                    using (FileStream fs = new FileStream(rutaFinal, FileMode.Open, FileAccess.Read))
                     {
-                        picContenido.Image = Image.FromFile(rutaAbsoluta);
-                        return;
-                    }
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            fs.CopyTo(ms);
+                            ms.Position = 0;
+                            Image img = Image.FromStream(ms);
 
-                    string rutaLocal = Path.Combine(Application.StartupPath, "Resources", archivoImagen);
-                    if (File.Exists(rutaLocal))
-                    {
-                        picContenido.Image = Image.FromFile(rutaLocal);
+                            this.Invoke((MethodInvoker)delegate
+                            {
+                                if (picMateria != null)
+                                {
+                                    picMateria.Image = img;
+                                }
+                            });
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudo cargar la imagen de la materia: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Console.WriteLine("Error al cargar la imagen: " + ex.Message);
             }
-        }
-
-        private void FormContenidoMateria_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void btnAdjuntar_Click(object sender, EventArgs e)
@@ -129,17 +140,12 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Materias
                     if (lblArchivoAdjunto != null)
                     {
                         lblArchivoAdjunto.Text = Path.GetFileName(rutaArchivoSeleccionado);
-                        lblArchivoAdjunto.ForeColor = Color.Green; // Visualmente indica que hay algo listo
+                        lblArchivoAdjunto.ForeColor = Color.Green;
                     }
 
                     MessageBox.Show("Archivo cargado con éxito. Presiona 'Enviar' para subirlo a la base de datos.", "Listo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
-        }
-
-        private void txtDescripcion_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnEnviar_Click(object sender, EventArgs e)
@@ -152,7 +158,6 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Materias
 
             try
             {
-                // Enviamos usando el método del DAO
                 bool exito = tareaDAO.InsertarEntrega(
                     idMateria,
                     Sesion.IdUsuario,
@@ -182,7 +187,6 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Materias
                 return;
             }
 
-            // Simplemente volvemos a abrir el explorador de archivos para sustituir el actual
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
                 ofd.Title = "Reemplazar archivo de entrega";
@@ -239,9 +243,7 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Materias
             }
         }
 
-        private void picMateria_Click(object sender, EventArgs e)
-        {
-
-        }
+        private void txtDescripcion_TextChanged(object sender, EventArgs e) { }
+        private void picMateria_Click(object sender, EventArgs e) { }
     }
 }

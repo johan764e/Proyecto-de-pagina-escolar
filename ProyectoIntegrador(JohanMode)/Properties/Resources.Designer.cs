@@ -63,9 +63,49 @@ namespace ProyectoIntegrador_JohanMode_.Properties {
         /// <summary>
         ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap IconAdjuntar {
+            get {
+                object obj = ResourceManager.GetObject("IconAdjuntar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap IconEntrega {
             get {
                 object obj = ResourceManager.GetObject("IconEntrega", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap imagengenericapng {
+            get {
+                object obj = ResourceManager.GetObject("imagengenericapng", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap imagengenericapng1 {
+            get {
+                object obj = ResourceManager.GetObject("imagengenericapng1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Busca un recurso adaptado de tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LogoSample_ByTailorBrands {
+            get {
+                object obj = ResourceManager.GetObject("LogoSample_ByTailorBrands", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
