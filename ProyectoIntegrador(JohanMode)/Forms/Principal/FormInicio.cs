@@ -43,72 +43,58 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         public FormInicio()
         {
             InitializeComponent();
-
-            // Nos aseguramos de que empiece cerrado al cargar la pantalla
-            pnlMenu.Width = AnchoMinimo;
             // carga las imágenes de las materias al iniciar el formulario
             CargarImagenesMaterias();
+
+            Application.EnableVisualStyles();
+
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1());
 
 
         }
         private void btnHamburguesa_Click(object sender, EventArgs e)
         {
-            timerMenu.Start();
+            menuCerrado = !menuCerrado;
 
+            // Cambiamos la visibilidad de los botones directamente
+            BtnInicio.Visible = !menuCerrado;
+            BtnPerfil.Visible = !menuCerrado;
+            BtnCalendario.Visible = !menuCerrado;
+            BtnAsesorias.Visible = !menuCerrado;
+            BtonAvisos.Visible = !menuCerrado;
+            BtnCerrarSesion.Visible = !menuCerrado;
+
+            // Paneles secundarios
+            panelnotificasiones.Visible = menuCerrado;
+            panel4.Visible = menuCerrado;
 
         }
-        // 2. Evento Tick del Timer (se ejecuta repetidamente para animar)
-        private void timerMenu_Tick_1(object sender, EventArgs e)
+
+
+
+        // Método auxiliar para limpiar tu código y evitar repeticiones
+        private void AlternarVisibilidadBotones(bool mostrar)
         {
-            // Calculamos dinámicamente el 25% (un cuarto) del ancho actual de tu ventana
-            int anchoMaximo = this.ClientSize.Width / 4;
+            menuCerrado = !menuCerrado;
 
-            if (menuCerrado)
-            {
-                // Si está cerrado, lo estiramos hacia la derecha (+ ancho)
-                pnlMenu.Width += 25; // Velocidad de apertura (puedes aumentarlo o disminuirlo)
+            // Cambiamos la visibilidad de los botones directamente
+            BtnInicio.Visible = !menuCerrado;
+            BtnPerfil.Visible = !menuCerrado;
+            BtnCalendario.Visible = !menuCerrado;
+            BtnAsesorias.Visible = !menuCerrado;
+            BtonAvisos.Visible = !menuCerrado;
+            BtnCerrarSesion.Visible = !menuCerrado;
 
-                // Si alcanza o supera el cuarto de pantalla, detenemos la animación
-                if (pnlMenu.Width >= anchoMaximo)
-                {
-                    pnlMenu.Width = anchoMaximo;
-                    menuCerrado = false;
-                    timerMenu.Stop();
-                }
-            }
-            else
-            {
-                // Si está abierto, lo encogemos hacia la izquierda (- ancho)
-                pnlMenu.Width -= 25;
-
-                // Si vuelve a su tamaño mínimo, detenemos la animación
-                if (pnlMenu.Width <= AnchoMinimo)
-                {
-                    pnlMenu.Width = AnchoMinimo;
-                    menuCerrado = true;
-                    timerMenu.Stop();
-                }
-            }
-            // Cambiamos la visibilidad de los botones según el estado del menú
-            bool mostrarMenu = !BtnInicio.Visible;
-            //Se muestra y se oculta al tocar el boton
-            BtnInicio.Visible = !BtnInicio.Visible;
-            BtnPerfil.Visible = !BtnPerfil.Visible;
-            BtnCalendario.Visible = !BtnCalendario.Visible;
-            BtnAsesorias.Visible = !BtnAsesorias.Visible;
-            BtonAvisos.Visible = !BtonAvisos.Visible;
-            BtnCerrarSesion.Visible = !BtnCerrarSesion.Visible;
-            // se oculta y se muestra al presionar el btn
-            panelnotificasiones.Visible = !mostrarMenu;
-            panel4.Visible = !mostrarMenu;
-           
-
-
+            // Paneles secundarios
+            panelnotificasiones.Visible = menuCerrado;
+            panel4.Visible = menuCerrado;
         }
+
 
         private void CargarImagenesMaterias()
         {
-            // Asignamos a cada uno de tus 4 PictureBox su respectiva imagen real
+            // Asigna a cada uno de tus 4 PictureBox su respectiva imagen real
             picMateria1.Image = ObtenerImagenReal("MateriaProgramacion.png");
             picMateria2.Image = ObtenerImagenReal("MateriaBasededatos.png");
             picMateria3.Image = ObtenerImagenReal("MateriaDiseñoGFC.jpg");
@@ -206,7 +192,7 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
 
         private void BtonAvisos_Click(object sender, EventArgs e)
         {
-            FormAvisos formAvisos = new FormAvisos();
+            FormListaAvisos formAvisos = new FormListaAvisos();
             formAvisos.Show();
         }
 
@@ -218,7 +204,7 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
 
         private void BtnCalendario_Click(object sender, EventArgs e)
         {
-            FormCalendario formCalendario = new FormCalendario();
+            FrmCalendario formCalendario = new FrmCalendario();
             formCalendario.Show();
         }
 
@@ -277,6 +263,11 @@ namespace ProyectoIntegrador_JohanMode_.Forms.Principal
         }
 
         private void Notificaciones_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pnlMenu_Paint(object sender, PaintEventArgs e)
         {
 
         }
