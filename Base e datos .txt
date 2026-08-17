@@ -1,0 +1,129 @@
+-- Crear la base de datos
+CREATE DATABASE GestionAcademica;
+GO
+
+USE GestionAcademica;
+GO
+
+-- 1. Tabla Grupos
+CREATE TABLE Grupos (
+    IdGrupo INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Carrera VARCHAR(100) NULL
+);
+
+-- 2. Tabla Plataformas
+CREATE TABLE Plataformas (
+    IdPlataforma INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion VARCHAR(255) NULL
+);
+
+-- 3. Tabla USUARIOS
+CREATE TABLE USUARIOS (
+    IdUsuario INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Correo VARCHAR(150) UNIQUE NOT NULL,
+    Contraseña VARCHAR(255) NOT NULL,
+    FotoPerfil VARCHAR(255) NULL,
+    FechaRegistro DATETIME DEFAULT GETDATE(),
+    Rol VARCHAR(50) NULL,
+    idGrupo INT NULL,
+    CONSTRAINT FK_Usuarios_Grupos FOREIGN KEY (idGrupo) REFERENCES Grupos(IdGrupo)
+);
+
+-- 4. Tabla UsuarioPlataforma
+CREATE TABLE UsuarioPlataforma (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    IdPlataforma INT NOT NULL,
+    UsuarioExterno VARCHAR(100) NULL,
+    UltimaSincronizacion DATETIME NULL,
+    Activa BIT DEFAULT 1,
+    CONSTRAINT FK_UsuarioPlataforma_Usuarios FOREIGN KEY (IdUsuario) REFERENCES USUARIOS(IdUsuario),
+    CONSTRAINT FK_UsuarioPlataforma_Plataformas FOREIGN KEY (IdPlataforma) REFERENCES Plataformas(IdPlataforma)
+);
+
+-- 5. Tabla Notificaciones
+CREATE TABLE Notificaciones (
+    IdNotificacion INT IDENTITY(1,1) PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    Titulo VARCHAR(150) NOT NULL,
+    Mensaje VARCHAR(MAX) NULL,
+    Fecha DATETIME DEFAULT GETDATE(),
+    Leida BIT DEFAULT 0,
+    CONSTRAINT FK_Notificaciones_Usuarios FOREIGN KEY (IdUsuario) REFERENCES USUARIOS(IdUsuario)
+);
+
+-- 6. Tabla Sincronizaciones
+CREATE TABLE Sincronizaciones (
+    IdSincronizacion INT IDENTITY(1,1) PRIMARY KEY,
+    IdUsuario INT NOT NULL,
+    Plataforma VARCHAR(100) NULL,
+    Fecha DATETIME DEFAULT GETDATE(),
+    Estado VARCHAR(50) NULL,
+    CONSTRAINT FK_Sincronizaciones_Usuarios FOREIGN KEY (IdUsuario) REFERENCES USUARIOS(IdUsuario)
+);
+
+-- 7. Tabla Materias
+CREATE TABLE Materias (
+    IdMateria INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    PlataformaOrigen VARCHAR(100) NULL,
+    CodigoExterno VARCHAR(100) NULL,
+    IdUsuario INT NULL,
+    IdGrupo INT NULL,
+    CONSTRAINT FK_Materias_Usuarios FOREIGN KEY (IdUsuario) REFERENCES USUARIOS(IdUsuario),
+    CONSTRAINT FK_Materias_Grupos FOREIGN KEY (IdGrupo) REFERENCES Grupos(IdGrupo)
+);
+
+-- 8. Tabla Asesorias
+CREATE TABLE Asesorias (
+    IdAsesoria INT IDENTITY(1,1) PRIMARY KEY,
+    IdMateria INT NOT NULL,
+    IdUsuario INT NOT NULL,
+    Asunto VARCHAR(150) NULL,
+    Contenido VARCHAR(MAX) NULL,
+    Fecha DATETIME DEFAULT GETDATE(),
+    Estado VARCHAR(50) NULL,
+    Comentarios VARCHAR(MAX) NULL,
+    CONSTRAINT FK_Asesorias_Materias FOREIGN KEY (IdMateria) REFERENCES Materias(IdMateria),
+    CONSTRAINT FK_Asesorias_Usuarios FOREIGN KEY (IdUsuario) REFERENCES USUARIOS(IdUsuario)
+);
+
+-- 9. Tabla Horarios
+CREATE TABLE Horarios (
+    IdHorario INT IDENTITY(1,1) PRIMARY KEY,
+    IdMateria INT NOT NULL,
+    Dia VARCHAR(20) NOT NULL,
+    HoraInicio TIME NOT NULL,
+    HoraFin TIME NOT NULL,
+    Salon VARCHAR(50) NULL,
+    CONSTRAINT FK_Horarios_Materias FOREIGN KEY (IdMateria) REFERENCES Materias(IdMateria)
+);
+
+-- 10. Tabla Tareas
+CREATE TABLE Tareas (
+    IdTarea INT IDENTITY(1,1) PRIMARY KEY,
+    IdMateria INT NOT NULL,
+    Titulo VARCHAR(150) NOT NULL,
+    Descripcion VARCHAR(MAX) NULL,
+    FechaEntrega DATETIME NULL,
+    Estado VARCHAR(50) NULL,
+    IdGrupo INT NULL,
+    CONSTRAINT FK_Tareas_Materias FOREIGN KEY (IdMateria) REFERENCES Materias(IdMateria),
+    CONSTRAINT FK_Tareas_Grupos FOREIGN KEY (IdGrupo) REFERENCES Grupos(IdGrupo)
+);
+
+-- 11. Tabla Avisos
+CREATE TABLE Avisos (
+    IdAviso INT IDENTITY(1,1) PRIMARY KEY,
+    IdMateria INT NOT NULL,
+    IdUsuario INT NOT NULL,
+    Titulo VARCHAR(150) NOT NULL,
+    Contenido VARCHAR(MAX) NULL,
+    FechaPublicacion DATETIME DEFAULT GETDATE(),
+    Activo BIT DEFAULT 1,
+    CONSTRAINT FK_Avisos_Materias FOREIGN KEY (IdMateria) REFERENCES Materias(IdMateria),
+    CONSTRAINT FK_Avisos_Usuarios FOREIGN KEY (IdUsuario) REFERENCES USUARIOS(IdUsuario)
+);
