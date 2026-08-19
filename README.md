@@ -6,8 +6,8 @@
 * **Nombre del Equipo / Proyecto:** ProyectoIntegrador_JohanMode
 * **Integrantes:**
   * Johan Armando perez Dominguez (Desarrollador)
-  * Jorge Luis Gamboa Vazquez (desarollador)
-  * Harry Daniel Meraz Rocha (desarrollador)
+  * Jorge Luis Gamboa Vazquez (Desarollador)
+  * Harry Daniel Meraz Rocha (Desarrollador)
 
 ## Resumen del Problema
 Los estudiantes y docentes suelen enfrentar dificultades para centralizar el seguimiento de sus actividades académicas, entrega de tareas, consulta de materias y programación de asesorías. 
