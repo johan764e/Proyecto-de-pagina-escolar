@@ -3,7 +3,7 @@
 
 ##  Portada e Integrantes
 * **Asignatura:** Bases de Datos
-* **Nombre del Equipo / Proyecto:** ProyectoIntegrador_JohanMode
+* **Nombre del Equipo / Proyecto:** Gestor academico
 * **Integrantes:**
   * Johan Armando perez Dominguez (Desarrollador)
   * Jorge Luis Gamboa Vazquez (Desarollador)
