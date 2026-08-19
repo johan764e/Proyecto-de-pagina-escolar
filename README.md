@@ -5,9 +5,9 @@
 * **Asignatura:** Bases de Datos
 * **Nombre del Equipo / Proyecto:** ProyectoIntegrador_JohanMode
 * **Integrantes:**
-  * Johan (Desarrollador Principal)
-  * Jorge 
-  * Harry Daniel Meraz Rocha (desarrollador )
+  * Johan Armando perez Dominguez (Desarrollador)
+  * Jorge Luis Gamboa Vazquez (desarollador)
+  * Harry Daniel Meraz Rocha (desarrollador)
 
 ## Resumen del Problema
 Los estudiantes y docentes suelen enfrentar dificultades para centralizar el seguimiento de sus actividades académicas, entrega de tareas, consulta de materias y programación de asesorías. 
